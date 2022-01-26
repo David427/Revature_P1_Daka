@@ -2,18 +2,12 @@
     - Include: db endpoint address, db port, db master username, db master password
     - Possibly include: table names? Column names?
 
-- Use daka.xml files as mapping files to link @Entity classes and db tables.
-    - Hibernate examples:
-        <class name="Event" table="EVENTS">
-        ...
-        </class>
+- Use annotations to provide db information (table name, column name, IDs/primary keys).
+    - Can edit already-existing classes.
+    - Don't need to read from mapping .xml files (the alternative).
 
-        <property name="date" type="timestamp" column="EVENT_DATE"/>
-        <property name="title"/>
-
-- Create some type of Session class/object that reads from daka.cfg.xml to establish the db connection
-  and from daka.xml files to establish object/relation mapping (classes & fields -> tables & columns).
-    - The Session would start, read data from all relevant files, connect to the db, and process db operations
+- Create some type of Session class/object that reads from daka.cfg.xml to establish the db connection.
+    - The Session would start, read data from cfg.xml, connect to the db, and process db operations
       until it's closed.
 
 - For CRUD operations: Use Reflection to get the values of the fields in the passed-in Object.
