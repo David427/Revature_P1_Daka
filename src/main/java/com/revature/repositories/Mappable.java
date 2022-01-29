@@ -7,7 +7,6 @@ import java.util.LinkedList;
 /**
  *
  */
-@Entity
 public interface Mappable {
     public void add(Object o);
     public Object get(Object o);
