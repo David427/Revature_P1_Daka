@@ -1,12 +1,12 @@
+package com.revature.models;
+
 import com.revature.annotations.Column;
 import com.revature.annotations.Entity;
 import com.revature.annotations.Table;
-import com.revature.models.Unit;
-import org.junit.jupiter.api.Test;
 
 @Entity
-@Table(name = "test_1")
-public class DriverTest extends Unit {
+@Table(name = "test_2")
+public class TestTwo {
     @Column(name = "id")
     private int id;
     @Column(name = "name")
@@ -16,12 +16,13 @@ public class DriverTest extends Unit {
     @Column(name = "available")
     private boolean available;
 
-    @Test
-    public static void main(String[] args) {
-        Class<DriverTest> rt = DriverTest.class;
-        Table table = rt.getAnnotation(Table.class);
+    public TestTwo() {
+    }
 
-        System.out.println(table.name());
-
+    public TestTwo(int id, String name, String type, boolean available) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.available = available;
     }
 }
