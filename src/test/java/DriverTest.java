@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 @Entity
 @Table(name = "test_1")
-public class RunnerTest extends Unit {
+public class DriverTest extends Unit {
     @Column(name = "id")
     private int id;
     @Column(name = "name")
@@ -18,7 +18,7 @@ public class RunnerTest extends Unit {
 
     @Test
     public static void main(String[] args) {
-        Class<RunnerTest> rt = RunnerTest.class;
+        Class<DriverTest> rt = DriverTest.class;
         Table table = rt.getAnnotation(Table.class);
 
         System.out.println(table.name());

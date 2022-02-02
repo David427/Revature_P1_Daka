@@ -1,10 +1,12 @@
 package com.revature.models;
 
 import com.revature.annotations.Entity;
+import com.revature.annotations.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Table
 public abstract class Unit {
 
     //region USING REFLECTION TO GET ALL CLASSES WITH @ENTITY
@@ -14,7 +16,7 @@ public abstract class Unit {
     //to work? Probably... but I want to make sure.
     //endregion
 
-    //region USING REFLECTION TO READ ANNOTATION VALUES
+    ////region USING REFLECTION TO READ ANNOTATION VALUES
     Class<Unit> unit = Unit.class;
     Entity annotation = unit.getAnnotation(Entity.class);
     //endregion
