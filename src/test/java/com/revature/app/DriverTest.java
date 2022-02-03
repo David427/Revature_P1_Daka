@@ -19,10 +19,7 @@ import static org.reflections.scanners.Scanners.TypesAnnotated;
 
 public class DriverTest {
     public static void main(String[] args) throws ClassNotFoundException {
-        TestOne greatObject = new TestOne();
         //dakaInit();
-
-
     }
 
     @Test

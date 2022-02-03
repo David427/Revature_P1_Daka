@@ -1,7 +1,6 @@
 package com.revature.app;
 
 import com.revature.models.TestOne;
-import com.revature.models.TestTwo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,18 +11,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
-class StandardTests {
+class AddTest {
 
     @BeforeAll
     static void initAll() {
-        TestOne greatObject = new TestOne();
     }
 
     @BeforeEach
