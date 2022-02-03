@@ -27,9 +27,9 @@ class AddTest {
     }
 
     @Test
-    public void dakaAdd() throws NoSuchMethodException {
+    public void dakaAdd() throws NoSuchMethodException, IllegalAccessException {
         //Creating an object only for testing purposes. The real method will have an object passed in.
-        Object greatObject = new TestOne();
+        Object greatObject = new TestOne(100, "test_title", "test_genre", false);
 
         Class<?> clazz = greatObject.getClass();
         assertEquals("com.revature.models.TestOne", clazz.getName());
@@ -48,12 +48,10 @@ class AddTest {
         assertTrue(expectedMethodNames.containsAll(methodzList));
         assertTrue(methodzList.containsAll(expectedMethodNames));
 
-        //For each field, get and then invoke the corresponding getter.
-        //TODO: HOW TO KNOW WHICH GETTER TO INVOKE?!?! WHERE IS IT IN THE COLLECTION?!?!?!
-        for (String f : fieldzList) {
-            Method test = clazz.getDeclaredMethod(methodzList.get(1));
+        for (Field f : fieldz) {
+            f.setAccessible(true);
+            System.out.println(f.get(greatObject));
         }
-
     }
 
     //HELPER METHOD
