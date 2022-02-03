@@ -1,7 +1,5 @@
 package com.revature.repositories;
 
-import com.revature.annotations.Entity;
-
 import java.util.LinkedList;
 
 /**

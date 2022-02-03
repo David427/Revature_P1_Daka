@@ -1,14 +1,14 @@
 package com.revature.models;
 
-import com.revature.annotations.Column;
-import com.revature.annotations.Entity;
-import com.revature.annotations.Table;
+import com.revature.persistence.Column;
+import com.revature.persistence.Entity;
+import com.revature.persistence.Table;
 
 @Entity
 @Table(name = "test_2")
 public class TestTwo {
     @Column(name = "id")
-    private int id;
+    private int id = 2;
     @Column(name = "name")
     private String name;
     @Column(name = "type")

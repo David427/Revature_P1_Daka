@@ -1,20 +1,20 @@
 package com.revature.models;
 
-import com.revature.annotations.Column;
-import com.revature.annotations.Entity;
-import com.revature.annotations.Table;
+import com.revature.persistence.Column;
+import com.revature.persistence.Entity;
+import com.revature.persistence.Table;
 
 @Entity
 @Table(name = "test_1")
 public class TestOne {
     @Column(name = "id")
-    private int id;
+    private int id = 1;
     @Column(name = "name")
-    private String title;
+    private String title = "placeholder";
     @Column(name = "type")
-    private String genre;
+    private String genre = "generic";
     @Column(name = "available")
-    private boolean onFire;
+    private boolean onFire = true;
 
     public TestOne() {
     }
@@ -23,6 +23,38 @@ public class TestOne {
         this.id = id;
         this.title = title;
         this.genre = genre;
+        this.onFire = onFire;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public boolean isOnFire() {
+        return onFire;
+    }
+
+    public void setOnFire(boolean onFire) {
         this.onFire = onFire;
     }
 }

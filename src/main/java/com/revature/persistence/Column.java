@@ -1,13 +1,14 @@
-package com.revature.annotations;
+package com.revature.persistence;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * This annotation marks any field that is a column in a relational database table.
+ *
+ * @see Entity
+ * @see Table
  */
+@Documented
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
