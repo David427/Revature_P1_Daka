@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,6 @@ public class ModelRepoImplTest implements ModelRepo {
     @Test
     @Override
     public void addRecord() {
-
         // Creating an object here only for testing purposes. The real method will have an object passed in.
         Object greatObject = new TestOne(100, "test_title", "test_genre", false);
 
@@ -81,28 +81,28 @@ public class ModelRepoImplTest implements ModelRepo {
             for (int i = 1; i < len; i++) {
                 switch (fields[i].getType().toString()) {
                     case "int":
-                        ps.setInt((i), fields[i].getInt(greatObject));
+                        ps.setInt(i, fields[i].getInt(greatObject));
                         break;
                     case "long":
-                        ps.setLong((i), fields[i].getLong(greatObject));
+                        ps.setLong(i, fields[i].getLong(greatObject));
                         break;
                     case "short":
-                        ps.setShort((i), fields[i].getShort(greatObject));
+                        ps.setShort(i, fields[i].getShort(greatObject));
                         break;
                     case "byte":
-                        ps.setByte((i), fields[i].getByte(greatObject));
+                        ps.setByte(i, fields[i].getByte(greatObject));
                         break;
                     case "class java.lang.String":
-                        ps.setString((i), (String) fields[i].get(greatObject));
+                        ps.setString(i, (String) fields[i].get(greatObject));
                         break;
                     case "boolean":
-                        ps.setBoolean((i), fields[i].getBoolean(greatObject));
+                        ps.setBoolean(i, fields[i].getBoolean(greatObject));
                         break;
                     case "double":
-                        ps.setDouble((i), fields[i].getDouble(greatObject));
+                        ps.setDouble(i, fields[i].getDouble(greatObject));
                         break;
                     case "float":
-                        ps.setFloat((i), fields[i].getFloat(greatObject));
+                        ps.setFloat(i, fields[i].getFloat(greatObject));
                         break;
                     default:
                         System.out.println("Unsupported: " + fields[i].getType().toString());
@@ -115,8 +115,32 @@ public class ModelRepoImplTest implements ModelRepo {
     }
 
     @Override
-    public Object getRecord() {
+    public Object getRecord() { //String tableName; int id
+        //TODO: should ModelRepoImpl have fields that include id and tableName?
+        int id = 100;
+        String idName = "id";
+        String tableName = "test_1";
+
+        //List<Class<?>> entities = new ArrayList(reflections.get(SubTypes.of(TypesAnnotated.with(Table.class)).asClass()));
+
+
+        String sql = "SELECT * FROM " + tableName + " WHERE " + idName + " = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } //end try
+
         return null;
+
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class MappableImpl implements Mappable {
 
-    //Connection connection = JdbcConnection.getConnection();
+    Connection connection = JdbcConnection.getConnection();
 
     @Override
     public void add(Object o) {
@@ -46,11 +46,11 @@ public class MappableImpl implements Mappable {
         String sql = "INSERT INTO " + tableName + " (" + cn + ") VALUES (" + qm + ") RETURNING *";
 
         try {
-            //PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql);
             for (int i = 0;i < len;i++) {
                 switch(fields[i].getType().toString()) {
-                    case "int": System.out.println("ps.setInt(" + (i+1) + ", " + fields[i].get(o) + ")"); break;
-                    case "long": System.out.println("ps.setLong(" + (i+1) + ", " + fields[i].get(o) + ")"); break;
+                    case "int": ps.setInt((i+1), fields[i].getInt(o)); break;
+                    case "long": ps.setLong((i+1), fields[i].getLong(o)); break;
                     case "short": System.out.println("ps.setShort(" + (i+1) + ", " + fields[i].get(o) + ")"); break;
                     case "byte": System.out.println("ps.setByte(" + (i+1) + ", " + fields[i].get(o) + ")"); break;
                     case "class java.lang.String": System.out.println("ps.setString(" + (i+1) + ", " + fields[i].get(o) + ")"); break;
@@ -61,7 +61,7 @@ public class MappableImpl implements Mappable {
                 }
             }
 
-            //ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
         } catch (Exception e) {
             e.printStackTrace();
