@@ -2,6 +2,7 @@ package com.revature.app;
 
 import com.revature.models.TestOne;
 import com.revature.persistence.Entity;
+import com.revature.repositories.MappableImpl;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 
@@ -20,6 +21,9 @@ import static org.reflections.scanners.Scanners.TypesAnnotated;
 public class DriverTest {
     public static void main(String[] args) throws ClassNotFoundException {
         //dakaInit();
+        TestOne t = new TestOne();
+        MappableImpl m = new MappableImpl();
+        m.add(t);
     }
 
     @Test
