@@ -76,58 +76,6 @@ public class DriverTest {
         }
     }
 
-    @Test
-    public void dakaAdd() {
-        // Creating an object here only for testing purposes. The real method will have an object passed in.
-        Object greatObject = new TestOne(100, "test_title", "test_genre", false);
-
-        Class<?> clazz = greatObject.getClass();
-        assertEquals("com.revature.models.TestOne", clazz.getName());
-
-        Field[] fieldz = clazz.getDeclaredFields();
-        List<String> fieldzList = getFieldNames(fieldz);
-        assertTrue(Arrays.asList("id", "title", "genre", "onFire").containsAll(fieldzList));
-
-        // Method[] methodz = clazz.getDeclaredMethods();
-        // List<String> methodzList = getMethodNames(methodz);
-        // List<String> expectedMethods = Arrays.asList("getId", "setGenre", "isOnFire", "getTitle",
-        //         "setOnFire", "setId", "setTitle", "getGenre");
-        // assertEquals(expectedMethods.size(), methodzList.size());
-        // assertTrue(expectedMethods.containsAll(methodzList));
-        // assertTrue(methodzList.containsAll(expectedMethods));
-
-        try {
-            for (Field f : fieldz) {
-                if (f.isAnnotationPresent(Column.class)) {
-                    f.setAccessible(true);
-                    Column column = f.getAnnotation(Column.class);
-                    String columnName = column.name();
-                    System.out.println(columnName);
-                    // TODO: mr.addRecord(greatObject);
-                    System.out.println(f.get(greatObject));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //region HELPER METHODS
-    private static List<String> getFieldNames(Field[] fields) {
-        List<String> fieldNames = new ArrayList<>();
-        for (Field field : fields)
-            fieldNames.add(field.getName());
-        return fieldNames;
-    }
-
-    private static List<String> getMethodNames(Method[] methods) {
-        List<String> methodNames = new ArrayList<>();
-        for (Method method : methods)
-            methodNames.add(method.getName());
-        return methodNames;
-    }
-    //endregion
-
     @AfterEach
     void tearDown() {
     }
