@@ -2,18 +2,20 @@ package com.revature.models;
 
 import com.revature.persistence.Column;
 import com.revature.persistence.Entity;
+import com.revature.persistence.Id;
 import com.revature.persistence.Table;
 
 @Entity
 @Table(name = "test_1")
 public class TestOne {
+    @Id(type = "default")
     @Column(name = "id")
     private int id = 1;
     @Column(name = "name")
     private String title = "placeholder";
-    @Column(name = "type")
+    @Column(name = "genre")
     private String genre = "generic";
-    @Column(name = "available")
+    @Column(name = "on_fire")
     private boolean onFire = true;
 
     public TestOne() {
