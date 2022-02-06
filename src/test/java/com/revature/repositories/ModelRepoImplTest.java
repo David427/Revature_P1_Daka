@@ -237,9 +237,36 @@ public class ModelRepoImplTest implements ModelRepo {
         //TODO: String Object
     }
 
+    @Test
     @Override
     public void deleteRecord() {
         //TODO: String Object
+        Object greatObject = new TestOne(15489, "omega_test", "action", false, 12345);
+
+        Class<?> c = greatObject.getClass();
+        Field field = null;
+        int result_id = -1;
+        try {
+            field = c.getDeclaredField("id");
+            field.setAccessible(true);
+            result_id = field.getInt(greatObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Table table = c.getAnnotation(Table.class);
+        String tableName = table.name();
+        String sql = "DELETE FROM " + tableName + " WHERE id=?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,result_id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     //region HELPER METHODS
