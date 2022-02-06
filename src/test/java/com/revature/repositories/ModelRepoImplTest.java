@@ -27,7 +27,7 @@ public class ModelRepoImplTest implements ModelRepo {
     @Override
     public void addRecord() {
         // Creating an object here only for testing purposes. The real method will have an object passed in.
-        Object greatObject = new TestOne(15489, "omega_test", "action", false, 12345);
+        Object greatObject = new TestOne(1, "omega_test", "action", false, 12345);
 
         Class<?> c = greatObject.getClass();
         Field[] fields = c.getDeclaredFields();
@@ -339,9 +339,128 @@ public class ModelRepoImplTest implements ModelRepo {
         // return null;
     }
 
+    @Test
     @Override
     public void updateRecord() {
         //TODO: String Object
+        Object greatObject = new TestOne(1, "alpha_test", "action", false, 12345);
+
+        Class<?> c = greatObject.getClass();
+        Field[] fields = c.getDeclaredFields();
+        int numOfFields = fields.length;
+        Table table = c.getAnnotation(Table.class);
+        String tableName = table.name();
+
+        // Remove id from fields array
+        String cn = ""; //column name
+        String id = ""; //id (if present)
+        Field id_field = null;
+        for (int i = 0; i < numOfFields; i++) {
+            if (fields[i].isAnnotationPresent(Id.class)) {
+                Column column = fields[i].getAnnotation(Column.class);
+                fields[i].setAccessible(true);
+                id_field = fields[i];
+
+                fields = ArrayUtils.remove(fields, i);
+                numOfFields = fields.length;
+
+                try {
+                    id = column.name();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Build column names for the SQL query.
+        for (int i = 0; i < numOfFields; i++) {
+            fields[i].setAccessible(true);
+            Column column = fields[i].getAnnotation(Column.class);
+
+            try {
+                cn += column.name() + "=?";
+
+                if (i < numOfFields - 1) {
+                    cn += ", ";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String sql = "UPDATE " + tableName + " SET " + cn + " WHERE " + id + "=? RETURNING *";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            for (int i = 0; i < numOfFields; i++) {
+                System.out.println(fields[i].getName());
+                switch (fields[i].getType().toString()) {
+                    case "int":
+                        ps.setInt(i + 1, fields[i].getInt(greatObject));
+                        break;
+                    case "long":
+                        ps.setLong(i + 1, fields[i].getLong(greatObject));
+                        break;
+                    case "short":
+                        ps.setShort(i + 1, fields[i].getShort(greatObject));
+                        break;
+                    case "byte":
+                        ps.setByte(i + 1, fields[i].getByte(greatObject));
+                        break;
+                    case "class java.lang.String":
+                        ps.setString(i + 1, (String) fields[i].get(greatObject));
+                        break;
+                    case "boolean":
+                        ps.setBoolean(i + 1, fields[i].getBoolean(greatObject));
+                        break;
+                    case "double":
+                        ps.setDouble(i + 1, fields[i].getDouble(greatObject));
+                        break;
+                    case "float":
+                        ps.setFloat(i + 1, fields[i].getFloat(greatObject));
+                        break;
+                    default:
+                        System.out.println("Unsupported: " + fields[i].getType());
+                } //end switch
+            } //end for
+
+            //final parameter - id; switch to determine id type
+            switch (id_field.getType().toString()) {
+                case "int":
+                    ps.setInt(fields.length + 1, id_field.getInt(greatObject));
+                    break;
+                case "long":
+                    ps.setLong(fields.length + 1, id_field.getLong(greatObject));
+                    break;
+                case "short":
+                    ps.setShort(fields.length + 1, id_field.getShort(greatObject));
+                    break;
+                case "byte":
+                    ps.setByte(fields.length + 1, id_field.getByte(greatObject));
+                    break;
+                case "class java.lang.String":
+                    ps.setString(fields.length + 1, (String) id_field.get(greatObject));
+                    break;
+                case "boolean":
+                    ps.setBoolean(fields.length + 1, id_field.getBoolean(greatObject));
+                    break;
+                case "double":
+                    ps.setDouble(fields.length + 1, id_field.getDouble(greatObject));
+                    break;
+                case "float":
+                    ps.setFloat(fields.length + 1, id_field.getFloat(greatObject));
+                    break;
+                default:
+                    System.out.println("Unsupported: " + id_field.getType());
+            } //end switch
+
+            ps.executeQuery();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
