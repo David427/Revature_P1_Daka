@@ -1,6 +1,7 @@
 package com.revature.repositories;
 
 import com.revature.models.TestOne;
+import com.revature.models.TestTwo;
 import com.revature.persistence.Column;
 import com.revature.persistence.Id;
 import com.revature.persistence.Table;
@@ -241,21 +242,31 @@ public class ModelRepoImplTest implements ModelRepo {
     @Override
     public void deleteRecord() {
         //TODO: String Object
-        Object greatObject = new TestOne(15489, "omega_test", "action", false, 12345);
+        Object greatObject = new TestTwo(2, "omega_test", true);
 
         Class<?> c = greatObject.getClass();
-        Field field = null;
-        int result_id = -1;
-        try {
-            field = c.getDeclaredField("id");
-            field.setAccessible(true);
-            result_id = field.getInt(greatObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        Field[] fields = c.getDeclaredFields();
+        int numOfFields = fields.length;
         Table table = c.getAnnotation(Table.class);
         String tableName = table.name();
+        int result_id = -1;
+        String primaryKeyName = "";
+
+        for (int i = 0; i < numOfFields; i++) {
+            if (fields[i].isAnnotationPresent(Id.class)) {
+                Column idColumn = fields[i].getAnnotation(Column.class);
+                primaryKeyName = idColumn.name();
+            }
+
+            try {
+                fields[i] = c.getDeclaredField(primaryKeyName);
+                fields[i].setAccessible(true);
+                result_id = fields[i].getInt(greatObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         String sql = "DELETE FROM " + tableName + " WHERE id=?";
 
         try {
@@ -265,8 +276,6 @@ public class ModelRepoImplTest implements ModelRepo {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
     //region HELPER METHODS
