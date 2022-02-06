@@ -267,7 +267,7 @@ public class ModelRepoImplTest implements ModelRepo {
             }
         }
 
-        String sql = "DELETE FROM " + tableName + " WHERE id=?";
+        String sql = "DELETE FROM " + tableName + " WHERE "+ primaryKeyName +"=?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
