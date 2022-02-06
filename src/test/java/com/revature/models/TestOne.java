@@ -17,15 +17,19 @@ public class TestOne {
     private String genre = "generic";
     @Column(name = "on_fire")
     private boolean onFire = true;
+    @Column(name = "real_test")
+    private int realTest = 69;
 
     public TestOne() {
     }
 
-    public TestOne(int id, String title, String genre, boolean onFire) {
+
+    public TestOne(int id, String title, String genre, boolean onFire, int realTest) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.onFire = onFire;
+        this.realTest = realTest;
     }
 
     public int getId() {
@@ -58,5 +62,16 @@ public class TestOne {
 
     public void setOnFire(boolean onFire) {
         this.onFire = onFire;
+    }
+
+    @Override
+    public String toString() {
+        return "TestOne{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", onFire=" + onFire +
+                ", realTest=" + realTest +
+                '}';
     }
 }

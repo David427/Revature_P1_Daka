@@ -1,16 +1,17 @@
 package com.revature.repositories;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public interface ModelRepo {
     //Paramter: Object o
     public void addRecord();
-    //Parameter String table, int id
-    public Object getRecord();
-    //Parameter String table
-    public List<?> getAllRecords();
-    //Parameter Object o, String table, int id
+    //Parameter String tableName, int id
+    public Object getRecord() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
+    //Parameter String tableName
+    public List<?> getAllRecords() throws ClassNotFoundException;
+    //Parameter Object o
     public void updateRecord();
-    //Parameter String table, int id
+    //Parameter Object o
     public void deleteRecord();
 }
