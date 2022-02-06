@@ -1,9 +1,9 @@
-package com.revature.models;
+package com.revature.daka.models;
 
-import com.revature.persistence.Column;
-import com.revature.persistence.Entity;
-import com.revature.persistence.Id;
-import com.revature.persistence.Table;
+import com.revature.daka.persistence.Column;
+import com.revature.daka.persistence.Entity;
+import com.revature.daka.persistence.Id;
+import com.revature.daka.persistence.Table;
 
 @Entity
 @Table(name = "test_1")

@@ -1,4 +1,4 @@
-package com.revature.util;
+package com.revature.daka.util;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,33 +8,30 @@ import java.util.Properties;
 
 public class JdbcConnection {
 
-    private static Connection connection = null;
+    // Create a java.sql.Connection object from JDBC.
+    private static Connection conn = null;
 
-    /**
-     * Establishes a connection if none exists. Returns the current connection otherwise.
-     * @return Connection
-     */
     public static Connection getConnection() {
-
-        if (connection == null) {
-
+        if (conn == null) {
+            // Establish a new connection. Load endpoint address, username and PW from a file.
             Properties props = new Properties();
-            try {
 
+            try {
                 props.load(JdbcConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
 
                 String endpoint = props.getProperty("endpoint");
-                String url = "jdbc:postgresql://" + endpoint + "/postgres";
                 String username = props.getProperty("username");
                 String password = props.getProperty("password");
+                String url = "jdbc:postgresql://" + endpoint + "/postgres";
 
-                connection = DriverManager.getConnection(url, username, password);
+                conn = DriverManager.getConnection(url, username, password);
 
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
-        } //end if
-
-        return connection;
+            return conn;
+        }
+        return conn;
     }
 }
+

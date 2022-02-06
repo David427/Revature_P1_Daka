@@ -1,4 +1,4 @@
-package com.revature.repositories;
+package com.revature.daka.repositories;
 
 public interface ModelRepoTest {
     //Paramter: Object o

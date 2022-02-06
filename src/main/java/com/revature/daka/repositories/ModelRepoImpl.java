@@ -1,9 +1,9 @@
-package com.revature.repositories;
+package com.revature.daka.repositories;
 
-import com.revature.persistence.Column;
-import com.revature.persistence.Id;
-import com.revature.persistence.Table;
-import com.revature.util.JdbcConnection;
+import com.revature.daka.persistence.Column;
+import com.revature.daka.persistence.Table;
+import com.revature.daka.util.JdbcConnection;
+import com.revature.daka.persistence.Id;
 import org.apache.commons.lang3.ArrayUtils;
 import org.reflections.Reflections;
 

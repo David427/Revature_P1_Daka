@@ -1,11 +1,11 @@
-package com.revature.repositories;
+package com.revature.daka.repositories;
 
-import com.revature.models.TestOne;
-import com.revature.models.TestTwo;
-import com.revature.persistence.Column;
-import com.revature.persistence.Id;
-import com.revature.persistence.Table;
-import com.revature.util.JdbcConnection;
+import com.revature.daka.models.TestOne;
+import com.revature.daka.models.TestTwo;
+import com.revature.daka.persistence.Column;
+import com.revature.daka.persistence.Id;
+import com.revature.daka.persistence.Table;
+import com.revature.daka.util.JdbcConnection;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.*;
 import org.reflections.Reflections;
