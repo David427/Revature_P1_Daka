@@ -7,17 +7,14 @@ import com.revature.persistence.Id;
 import com.revature.persistence.Table;
 import com.revature.util.JdbcConnection;
 import org.apache.commons.lang3.ArrayUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.reflections.scanners.Scanners.TypesAnnotated;
@@ -115,7 +112,7 @@ public class ModelRepoImplTest implements ModelRepo {
                         ps.setFloat(i + 1, fields[i].getFloat(greatObject));
                         break;
                     default:
-                        System.out.println("Unsupported: " + fields[i].getType().toString());
+                        System.out.println("Unsupported: " + fields[i].getType());
                 }
             }
             ps.executeUpdate();
@@ -126,12 +123,9 @@ public class ModelRepoImplTest implements ModelRepo {
 
     @Test
     @Override
-    public Object getRecord()
-            throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
-            InstantiationException, IllegalAccessException
-    {
+    public void getRecord() {
         // Setting params for testing purposes.
-        String tableName = "table_1";
+        String tableName = "test_1";
         int id = 2;
 
         String primaryKeyName = "";
@@ -142,7 +136,14 @@ public class ModelRepoImplTest implements ModelRepo {
             Table entity = e.getAnnotation(Table.class);
 
             if (entity.name().equals(tableName)) {
-                Class<?> c = Class.forName(fqcn);
+                Class<?> c = null;
+                try {
+                    c = Class.forName(fqcn);
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+
+                assert c != null;
                 Field[] fields = c.getDeclaredFields();
                 int numOfFields = fields.length;
 
@@ -155,8 +156,22 @@ public class ModelRepoImplTest implements ModelRepo {
                     }
                 }
 
-                Constructor<?> ctor = c.getConstructor();
-                Object output = ctor.newInstance();
+                Constructor<?> ctor = null;
+                try {
+                    ctor = c.getConstructor();
+                } catch (NoSuchMethodException ex) {
+                    ex.printStackTrace();
+                }
+
+                Object output = null;
+                try {
+                    assert ctor != null;
+                    output = ctor.newInstance();
+                } catch (InstantiationException | InvocationTargetException | IllegalAccessException ex) {
+                    ex.printStackTrace();
+                }
+
+                assert output != null;
                 Field[] outputFields = output.getClass().getDeclaredFields();
 
                 for (Field f : outputFields) {
@@ -173,64 +188,155 @@ public class ModelRepoImplTest implements ModelRepo {
 
                     while (rs.next()) {
                         for (int i = 0; i < numOfFields; i++) {
-                            switch (fields[i].getType().toString()) {
-                                case "int":
-                                    outputFields[i].setInt(output, rs.getInt(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "long":
-                                    outputFields[i].setLong(output, rs.getLong(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "short":
-                                    outputFields[i].setShort(output, rs.getShort(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "byte":
-                                    outputFields[i].setByte(output, rs.getByte(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "class java.lang.String":
-                                    outputFields[i].set(output, rs.getString(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "boolean":
-                                    outputFields[i].setBoolean(output, rs.getBoolean(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "double":
-                                    outputFields[i].setDouble(output, rs.getDouble(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                case "float":
-                                    outputFields[i].setFloat(output, rs.getFloat(rsMetaData.getColumnName(i + 1)));
-                                    break;
-                                default:
-                                    System.out.println("Unsupported: " + fields[i].getType().toString());
+                            try {
+                                switch (fields[i].getType().toString()) {
+                                    case "int":
+                                        outputFields[i].setInt(output, rs.getInt(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "long":
+                                        outputFields[i].setLong(output, rs.getLong(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "short":
+                                        outputFields[i].setShort(output, rs.getShort(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "byte":
+                                        outputFields[i].setByte(output, rs.getByte(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "class java.lang.String":
+                                        outputFields[i].set(output, rs.getString(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "boolean":
+                                        outputFields[i].setBoolean(output, rs.getBoolean(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "double":
+                                        outputFields[i].setDouble(output, rs.getDouble(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "float":
+                                        outputFields[i].setFloat(output, rs.getFloat(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    default:
+                                        System.out.println("Unsupported: " + fields[i].getType());
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
                         }
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                return output;
+                assertNotNull(output);
+                System.out.println(output);
+                // return objects;
             }
         }
-        return null;
+        // return null;
     }
 
     @Test
     @Override
-    public List<?> getAllRecords() throws ClassNotFoundException {
+    public void getAllRecords() {
         // Setting params for testing purposes.
-        String tableName = "table_1";
+        String tableName = "test_2";
         Set<Class<?>> entities = reflections.get(TypesAnnotated.with(Table.class).asClass());
-        // assertNotNull(entities);
+        assertNotNull(entities);
+        List<Object> objects = null;
 
         for (Class<?> e : entities) {
             String fqcn = e.getName();
             Table entity = e.getAnnotation(Table.class);
 
             if (entity.name().equals(tableName)) {
-                Class<?> c = Class.forName(fqcn);
+                Class<?> c = null;
+                try {
+                    c = Class.forName(fqcn);
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                assert c != null;
                 Field[] fields = c.getDeclaredFields();
                 int numOfFields = fields.length;
+
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                }
+
+                String sql = "SELECT * FROM " + tableName;
+
+                try {
+                    objects = new ArrayList<>();
+                    List<Integer> dataTypes = new ArrayList<>();
+                    PreparedStatement ps = conn.prepareStatement(sql);
+                    ResultSet rs = ps.executeQuery();
+                    ResultSetMetaData rsMetaData = rs.getMetaData();
+
+                    while (rs.next()) {
+                        Constructor<?> ctor = null;
+                        try {
+                            ctor = c.getConstructor();
+                        } catch (NoSuchMethodException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        Object output = null;
+                        try {
+                            assert ctor != null;
+                            output = ctor.newInstance();
+                        } catch (InstantiationException | InvocationTargetException | IllegalAccessException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        assert output != null;
+                        Field[] outputFields = output.getClass().getDeclaredFields();
+
+                        for (Field f : outputFields) {
+                            f.setAccessible(true);
+                        }
+
+                        for (int i = 0; i < numOfFields; i++) {
+                            try {
+                                switch (fields[i].getType().toString()) {
+                                    case "int":
+                                        outputFields[i].setInt(output, rs.getInt(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "long":
+                                        outputFields[i].setLong(output, rs.getLong(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "short":
+                                        outputFields[i].setShort(output, rs.getShort(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "byte":
+                                        outputFields[i].setByte(output, rs.getByte(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "class java.lang.String":
+                                        outputFields[i].set(output, rs.getString(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "boolean":
+                                        outputFields[i].setBoolean(output, rs.getBoolean(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "double":
+                                        outputFields[i].setDouble(output, rs.getDouble(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    case "float":
+                                        outputFields[i].setFloat(output, rs.getFloat(rsMetaData.getColumnName(i + 1)));
+                                        break;
+                                    default:
+                                        System.out.println("Unsupported: " + fields[i].getType());
+                                }
+                            } catch (SQLException | IllegalAccessException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                        objects.add(output);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                // return objects;
             }
         }
-        return null;
+        System.out.println(objects);
+        // return null;
     }
 
     @Override
@@ -267,7 +373,7 @@ public class ModelRepoImplTest implements ModelRepo {
             }
         }
 
-        String sql = "DELETE FROM " + tableName + " WHERE id=?";
+        String sql = "DELETE FROM " + tableName + " WHERE "+ primaryKeyName +"=?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -277,20 +383,4 @@ public class ModelRepoImplTest implements ModelRepo {
             e.printStackTrace();
         }
     }
-
-    //region HELPER METHODS
-    private static List<String> getFieldNames(Field[] fields) {
-        List<String> fieldNames = new ArrayList<>();
-        for (Field field : fields)
-            fieldNames.add(field.getName());
-        return fieldNames;
-    }
-
-    private static List<String> getMethodNames(Method[] methods) {
-        List<String> methodNames = new ArrayList<>();
-        for (Method method : methods)
-            methodNames.add(method.getName());
-        return methodNames;
-    }
-    //endregion
 }
