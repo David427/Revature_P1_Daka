@@ -1,6 +1,6 @@
 package com.revature.repositories;
 
-public interface ModelRepo {
+public interface ModelRepoTest {
     //Paramter: Object o
     public void addRecord();
     //Parameter String tableName, int id

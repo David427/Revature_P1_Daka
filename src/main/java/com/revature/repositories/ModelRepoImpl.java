@@ -1,13 +1,10 @@
 package com.revature.repositories;
 
-import com.revature.models.TestOne;
-import com.revature.models.TestTwo;
 import com.revature.persistence.Column;
 import com.revature.persistence.Id;
 import com.revature.persistence.Table;
 import com.revature.util.JdbcConnection;
 import org.apache.commons.lang3.ArrayUtils;
-import org.junit.jupiter.api.*;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -16,20 +13,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.reflections.scanners.Scanners.TypesAnnotated;
 
-public class ModelRepoImplTest implements ModelRepoTest {
+public class ModelRepoImpl implements ModelRepo {
     static Connection conn = JdbcConnection.getConnection();
     static Reflections reflections = new Reflections("com.revature");
 
-    @Test
     @Override
-    public void addRecord() {
-        // Creating an object here only for testing purposes. The real method will have an object passed in.
-        Object greatObject = new TestOne(1, "omega_test", "action", false, 12345);
-
-        Class<?> c = greatObject.getClass();
+    public void addRecord(Object o) {
+        Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
         Table table = c.getAnnotation(Table.class);
@@ -88,28 +80,28 @@ public class ModelRepoImplTest implements ModelRepoTest {
             for (int i = 0; i < numOfFields; i++) {
                 switch (fields[i].getType().toString()) {
                     case "int":
-                        ps.setInt(i + 1, fields[i].getInt(greatObject));
+                        ps.setInt(i + 1, fields[i].getInt(o));
                         break;
                     case "long":
-                        ps.setLong(i + 1, fields[i].getLong(greatObject));
+                        ps.setLong(i + 1, fields[i].getLong(o));
                         break;
                     case "short":
-                        ps.setShort(i + 1, fields[i].getShort(greatObject));
+                        ps.setShort(i + 1, fields[i].getShort(o));
                         break;
                     case "byte":
-                        ps.setByte(i + 1, fields[i].getByte(greatObject));
+                        ps.setByte(i + 1, fields[i].getByte(o));
                         break;
                     case "class java.lang.String":
-                        ps.setString(i + 1, (String) fields[i].get(greatObject));
+                        ps.setString(i + 1, (String) fields[i].get(o));
                         break;
                     case "boolean":
-                        ps.setBoolean(i + 1, fields[i].getBoolean(greatObject));
+                        ps.setBoolean(i + 1, fields[i].getBoolean(o));
                         break;
                     case "double":
-                        ps.setDouble(i + 1, fields[i].getDouble(greatObject));
+                        ps.setDouble(i + 1, fields[i].getDouble(o));
                         break;
                     case "float":
-                        ps.setFloat(i + 1, fields[i].getFloat(greatObject));
+                        ps.setFloat(i + 1, fields[i].getFloat(o));
                         break;
                     default:
                         System.out.println("Unsupported: " + fields[i].getType());
@@ -121,13 +113,8 @@ public class ModelRepoImplTest implements ModelRepoTest {
         }
     }
 
-    @Test
     @Override
-    public void getRecord() {
-        // Setting params for testing purposes.
-        String tableName = "test_1";
-        int id = 2;
-
+    public Object getRecord(String tableName, int id) {
         String primaryKeyName = "";
         Set<Class<?>> entities = reflections.get(TypesAnnotated.with(Table.class).asClass());
 
@@ -225,21 +212,15 @@ public class ModelRepoImplTest implements ModelRepoTest {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                assertNotNull(output);
-                System.out.println(output);
-                // return objects;
+                return output;
             }
         }
-        // return null;
+        return null;
     }
 
-    @Test
     @Override
-    public void getAllRecords() {
-        // Setting params for testing purposes.
-        String tableName = "test_2";
+    public List<?> getAllRecords(String tableName) {
         Set<Class<?>> entities = reflections.get(TypesAnnotated.with(Table.class).asClass());
-        assertNotNull(entities);
         List<Object> objects = null;
 
         for (Class<?> e : entities) {
@@ -265,7 +246,6 @@ public class ModelRepoImplTest implements ModelRepoTest {
 
                 try {
                     objects = new ArrayList<>();
-                    List<Integer> dataTypes = new ArrayList<>();
                     PreparedStatement ps = conn.prepareStatement(sql);
                     ResultSet rs = ps.executeQuery();
                     ResultSetMetaData rsMetaData = rs.getMetaData();
@@ -332,28 +312,23 @@ public class ModelRepoImplTest implements ModelRepoTest {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                // return objects;
+                return objects;
             }
         }
-        System.out.println(objects);
-        // return null;
+        return null;
     }
 
-    @Test
     @Override
-    public void updateRecord() {
-        //TODO: String Object
-        Object greatObject = new TestOne(1, "alpha_test", "action", false, 69);
-
-        Class<?> c = greatObject.getClass();
+    public void updateRecord(Object o) {
+        Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
         Table table = c.getAnnotation(Table.class);
         String tableName = table.name();
 
-        // Remove id from fields array
-        String cn = ""; //column name
-        String id = ""; //id (if present)
+        // Remove @Id field from fields[].
+        String cn = "";
+        String id = "";
         Field id_field = null;
         for (int i = 0; i < numOfFields; i++) {
             if (fields[i].isAnnotationPresent(Id.class)) {
@@ -396,96 +371,91 @@ public class ModelRepoImplTest implements ModelRepoTest {
             for (int i = 0; i < numOfFields; i++) {
                 switch (fields[i].getType().toString()) {
                     case "int":
-                        ps.setInt(i + 1, fields[i].getInt(greatObject));
+                        ps.setInt(i + 1, fields[i].getInt(o));
                         break;
                     case "long":
-                        ps.setLong(i + 1, fields[i].getLong(greatObject));
+                        ps.setLong(i + 1, fields[i].getLong(o));
                         break;
                     case "short":
-                        ps.setShort(i + 1, fields[i].getShort(greatObject));
+                        ps.setShort(i + 1, fields[i].getShort(o));
                         break;
                     case "byte":
-                        ps.setByte(i + 1, fields[i].getByte(greatObject));
+                        ps.setByte(i + 1, fields[i].getByte(o));
                         break;
                     case "class java.lang.String":
-                        ps.setString(i + 1, (String) fields[i].get(greatObject));
+                        ps.setString(i + 1, (String) fields[i].get(o));
                         break;
                     case "boolean":
-                        ps.setBoolean(i + 1, fields[i].getBoolean(greatObject));
+                        ps.setBoolean(i + 1, fields[i].getBoolean(o));
                         break;
                     case "double":
-                        ps.setDouble(i + 1, fields[i].getDouble(greatObject));
+                        ps.setDouble(i + 1, fields[i].getDouble(o));
                         break;
                     case "float":
-                        ps.setFloat(i + 1, fields[i].getFloat(greatObject));
+                        ps.setFloat(i + 1, fields[i].getFloat(o));
                         break;
                     default:
                         System.out.println("Unsupported: " + fields[i].getType());
-                } //end switch
-            } //end for
+                }
+            }
 
-            //final parameter - id; switch to determine id type
+            //final parameter - id; switch to determine id type.
             switch (id_field.getType().toString()) {
                 case "int":
-                    ps.setInt(fields.length + 1, id_field.getInt(greatObject));
+                    ps.setInt(fields.length + 1, id_field.getInt(o));
                     break;
                 case "long":
-                    ps.setLong(fields.length + 1, id_field.getLong(greatObject));
+                    ps.setLong(fields.length + 1, id_field.getLong(o));
                     break;
                 case "short":
-                    ps.setShort(fields.length + 1, id_field.getShort(greatObject));
+                    ps.setShort(fields.length + 1, id_field.getShort(o));
                     break;
                 case "byte":
-                    ps.setByte(fields.length + 1, id_field.getByte(greatObject));
+                    ps.setByte(fields.length + 1, id_field.getByte(o));
                     break;
                 case "class java.lang.String":
-                    ps.setString(fields.length + 1, (String) id_field.get(greatObject));
+                    ps.setString(fields.length + 1, (String) id_field.get(o));
                     break;
                 case "boolean":
-                    ps.setBoolean(fields.length + 1, id_field.getBoolean(greatObject));
+                    ps.setBoolean(fields.length + 1, id_field.getBoolean(o));
                     break;
                 case "double":
-                    ps.setDouble(fields.length + 1, id_field.getDouble(greatObject));
+                    ps.setDouble(fields.length + 1, id_field.getDouble(o));
                     break;
                 case "float":
-                    ps.setFloat(fields.length + 1, id_field.getFloat(greatObject));
+                    ps.setFloat(fields.length + 1, id_field.getFloat(o));
                     break;
                 default:
                     System.out.println("Unsupported: " + id_field.getType());
-            } //end switch
-
+            }
             ps.executeQuery();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    @Test
     @Override
-    public void deleteRecord() {
-        //TODO: String Object
-        Object greatObject = new TestTwo(2, "omega_test", true);
-
-        Class<?> c = greatObject.getClass();
+    public void deleteRecord(Object o) {
+        Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
         Table table = c.getAnnotation(Table.class);
         String tableName = table.name();
         int result_id = -1;
         String primaryKeyName = "";
+        String primaryKeyField = "";
 
         for (int i = 0; i < numOfFields; i++) {
             if (fields[i].isAnnotationPresent(Id.class)) {
                 Column idColumn = fields[i].getAnnotation(Column.class);
                 primaryKeyName = idColumn.name();
+                primaryKeyField = fields[i].getName();
             }
 
             try {
-                fields[i] = c.getDeclaredField(primaryKeyName);
+                fields[i] = c.getDeclaredField(primaryKeyField);
                 fields[i].setAccessible(true);
-                result_id = fields[i].getInt(greatObject);
+                result_id = fields[i].getInt(o);
             } catch (Exception e) {
                 e.printStackTrace();
             }
