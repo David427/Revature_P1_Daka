@@ -20,7 +20,7 @@ public class JdbcConnection {
 
             Properties props = new Properties();
             try {
-
+                Class.forName("org.postgresql.Driver");
                 props.load(JdbcConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
 
                 String endpoint = props.getProperty("endpoint");
@@ -30,7 +30,7 @@ public class JdbcConnection {
 
                 connection = DriverManager.getConnection(url, username, password);
 
-            } catch (IOException | SQLException e) {
+            } catch (IOException | SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         } //end if

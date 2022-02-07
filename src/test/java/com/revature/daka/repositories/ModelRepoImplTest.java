@@ -28,12 +28,14 @@ public class ModelRepoImplTest implements ModelRepoTest {
     public void addRecord() {
         // Creating an object here only for testing purposes. The real method will have an object passed in.
         Object greatObject = new TestOne(1, "omega_test", "action", false, 12345);
+        assertNotNull(greatObject);
 
         Class<?> c = greatObject.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
         Table table = c.getAnnotation(Table.class);
         String tableName = table.name();
+        assertEquals("test_1", tableName);
 
         // Build column names and ?'s for the SQL query.
         String cn = "";
