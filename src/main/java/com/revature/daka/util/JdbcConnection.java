@@ -34,7 +34,7 @@ public class JdbcConnection {
                 e.printStackTrace();
             }
         } //end if
-
+        Logger.logger.info("JDBC Connection Established");
         return connection;
     }
 }

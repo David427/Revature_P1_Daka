@@ -249,6 +249,7 @@ public class ModelRepoImplTest implements ModelRepoTest {
             Table entity = e.getAnnotation(Table.class);
 
             if (entity.name().equals(tableName)) {
+                assertEquals("test_2", entity.name());
                 Class<?> c = null;
                 try {
                     c = Class.forName(fqcn);

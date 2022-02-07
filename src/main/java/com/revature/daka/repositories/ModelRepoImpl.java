@@ -4,6 +4,7 @@ import com.revature.daka.persistence.Column;
 import com.revature.daka.persistence.Table;
 import com.revature.daka.util.JdbcConnection;
 import com.revature.daka.persistence.Id;
+import com.revature.daka.util.Logger;
 import org.apache.commons.lang3.ArrayUtils;
 import org.reflections.Reflections;
 
@@ -21,6 +22,7 @@ public class ModelRepoImpl implements ModelRepo {
 
     @Override
     public void addRecord(Object o) {
+        Logger.logger.info("addRecord() started");
         Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
@@ -115,6 +117,7 @@ public class ModelRepoImpl implements ModelRepo {
 
     @Override
     public Object getRecord(String tableName, int id) {
+        Logger.logger.info("getRecord() started");
         String primaryKeyName = "";
         Set<Class<?>> entities = reflections.get(TypesAnnotated.with(Table.class).asClass());
 
@@ -220,6 +223,7 @@ public class ModelRepoImpl implements ModelRepo {
 
     @Override
     public List<?> getAllRecords(String tableName) {
+        Logger.logger.info("getAllRecord() started");
         Set<Class<?>> entities = reflections.get(TypesAnnotated.with(Table.class).asClass());
         List<Object> objects = null;
 
@@ -320,6 +324,7 @@ public class ModelRepoImpl implements ModelRepo {
 
     @Override
     public void updateRecord(Object o) {
+        Logger.logger.info("updateRecord() started");
         Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
@@ -436,6 +441,7 @@ public class ModelRepoImpl implements ModelRepo {
 
     @Override
     public void deleteRecord(Object o) {
+        Logger.logger.info("deleteRecord() started");
         Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
