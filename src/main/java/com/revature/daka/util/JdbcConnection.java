@@ -33,7 +33,7 @@ public class JdbcConnection {
             } catch (IOException | SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } //end if
+        }
         Logger.logger.info("JDBC Connection Established");
         return connection;
     }
