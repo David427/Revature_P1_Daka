@@ -9,45 +9,34 @@ Additionally, you will need to build a simple CRUD web application (what objects
 ## Tech Stack
 - [X] Java 8
 - [X] JUnit
-- [ ] Mockito
+- [X] Mockito
 - [X] Apache Maven
-- [ ] GSON library (for JSON marshalling/unmarshalling)
-- [ ] Java EE Servlet API (v4.0+)
+- [X] GSON library
 - [X] PostGreSQL deployed on AWS RDS
-- [X] Git SCM (on GitHub)
-- [ ] AWS CodeBuild
-- [ ] AWS CodePipeline
+- [X] Git SCM (GitHub)
 
+## Features
+- [X] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints.
+- [X] JDBC logic is abstracted away by the custom ORM.
+- [X] Programmatic persistence of entities (basic CRUD support) using custom ORM.
+- [X] File-based or programmatic configuration of entities.
+- [X] Generated Code Coverage reports.
+- [X] Usage of the java.util.Stream API within your project.
+- [X] Custom ORM source code should be included within the web application as a Maven dependency.
 
-## Functional Requirements
-- [ ] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints
-- [ ] JDBC logic is abstracted away by the custom ORM 
-- [ ] Programmatic persistence of entities (basic CRUD support) using custom ORM
-- [ ] File-based or programmatic configuration of entities
+**To-Do**
+- [ ] 80% line coverage of all service layer classes.
 
-## Non-Functional Requirements
-- [ ] 80% line coverage of all service layer classes
-- [ ] Generated Code Coverage reports
-- [ ] Usage of the java.util.Stream API within your project
-- [ ] Custom ORM source code should be included within the web application as a Maven dependency
+## Getting Started
+- Clone the repository using this link: https://github.com/David427/org_daka_p1.git
+- Run mvn install to package the ORM into a JAR.
+- Add daka as a Maven dependency in your API project.
 
-## Bonus Features
-- [ ] Custom ORM supports basic transaction management (begin, commit, savepoint, rollback) 
-- [ ] Custom ORM supports connection pooling
-- [ ] Session-based caching to minimize calls to the database for already retrieved data
-- [ ] Deployment of web application to AWS EC2 (use of AWS Elastic Beanstalk is permitted) 
-- [ ] Continuous integration pipelines that builds some main branch each project (the ORM and the web app, separately)
+## Usage
+- Create a ModelRepoImpl object to access daka's CRUD operation methods.
 
-## Init Instructions
-- Create a new repository within this organization for your custom ORM (naming convention: `orm_name_p1`; with `orm_name` being replaced by the name of your custom library)
-- Create another new repository within this organization for your web application
+# Contributors
+- Kainalu Barino (GitHub: @kbarino45)
 
-## Presentation
-- Finalized version of custom ORM and web application must be pushed to personal repository within this organization by the presentation date: **February 7th, 2022**
-- 10-15 minute live demonstration of the web application (that leverages your custom ORM); demonstration will be performed using PostMan to query your API's endpoints
-
-### Resources for researching ORMs
-- [What is an ORM?](https://blog.bitsrc.io/what-is-an-orm-and-why-you-should-use-it-b2b6f75f5e2a)
-- [Hibernate Documentation](https://hibernate.org/orm/documentation/5.4/)
-- [JavaLite ActiveJDBC Documentation](https://javalite.io/documentation)
-- [Using Java Reflection](https://www.oracle.com/technical-resources/articles/java/javareflection.html)
+# License
+This project is unlicensed.
