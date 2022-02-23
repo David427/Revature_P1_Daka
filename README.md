@@ -20,16 +20,16 @@ View the Web API here: https://github.com/David427/Revature_P1_WebAPI
 - [X] JDBC logic is abstracted away by the custom ORM.
 - [X] Programmatic persistence of entities (basic CRUD support) using custom ORM.
 - [X] File-based or programmatic configuration of entities.
-- [X] Generated Code Coverage reports.
-- [X] Usage of the java.util.Stream API within your project.
-- [X] Custom ORM source code should be included within the web application as a Maven dependency.
+- [X] Generated code coverage reports.
+- [X] Usage of the java.util.Stream API.
+- [X] Custom ORM source code that is included within the web application as a Maven dependency.
 
 **To-Do**
-- [ ] 80% line coverage of all service layer classes.
+- [ ] 80% line coverage of all Service layer classes.
 - [ ] Support advanced data operations.
 
 ## Getting Started
-- Clone the repository using this link: https://github.com/David427/org_daka_p1.git
+- Clone the repository using this link: https://github.com/David427/Revature_P1_Daka
 - Run mvn install to package the ORM into a JAR.
 - Add daka as a Maven dependency in your API project.
 
