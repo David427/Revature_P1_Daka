@@ -16,5 +16,4 @@ public @interface Column {
     boolean unique() default false;
     boolean nullable() default true;
     String dataType() default "";
-    String table() default "";
 }

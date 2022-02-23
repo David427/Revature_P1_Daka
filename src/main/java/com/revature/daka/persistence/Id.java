@@ -14,7 +14,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
-
 public @interface Id {
     String type() default "";
 }

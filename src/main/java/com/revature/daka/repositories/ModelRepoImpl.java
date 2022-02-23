@@ -113,6 +113,7 @@ public class ModelRepoImpl implements ModelRepo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Logger.logger.info("addRecord() successfully completed");
     }
 
     @Override
@@ -215,9 +216,11 @@ public class ModelRepoImpl implements ModelRepo {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+                Logger.logger.info("getRecord() successfully completed");
                 return output;
             }
         }
+        Logger.logger.info("getRecord() unsuccessfully completed");
         return null;
     }
 
@@ -316,9 +319,11 @@ public class ModelRepoImpl implements ModelRepo {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+                Logger.logger.info("getAllRecords() successfully completed");
                 return objects;
             }
         }
+        Logger.logger.info("getAllRecords() unsuccessfully completed");
         return null;
     }
 
@@ -437,11 +442,12 @@ public class ModelRepoImpl implements ModelRepo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Logger.logger.info("updateRecord() successfully completed");
     }
 
     @Override
     public void deleteRecord(Object o) {
-        Logger.logger.info("deleteRecord() started");
+        Logger.logger.info("deleteRecord() executed");
         Class<?> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
         int numOfFields = fields.length;
@@ -476,5 +482,6 @@ public class ModelRepoImpl implements ModelRepo {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        Logger.logger.info("updateRecord() successfully completed");
     }
 }
